@@ -103,6 +103,10 @@
 <script setup>
 import { ref } from 'vue'
 import { Search } from '@element-plus/icons-vue'
+// import axios from 'axios'; // 导入axios
+import { 
+  getMovieByYearApi
+} from "@/api/test.js";
 
 const activeName = ref('0')
 
@@ -144,15 +148,47 @@ const searchQuery = ref('');
 const searchResults = ref([]);
 const drawerVisible = ref(false);
 
-const search = () => {
-  // 调用后端接口进行查询
-  // 更新 searchResults
-  searchResults.value = [{ title: '电影1', director: '导演A', year: '2020' },
-  { title: '电影2', director: '导演B', year: '2019' },
-  { title: '电影3', director: '导演C', year: '2021' },
-  { title: '电影4', director: '导演D', year: '2018' },
-  { title: '电影5', director: '导演E', year: '2022' },];
-};
+// const search = () => {
+//   // 调用后端接口进行查询
+//   // 更新 searchResults
+//   searchResults.value = [{ title: '电影1', director: '导演A', year: '2020' },
+//   { title: '电影2', director: '导演B', year: '2019' },
+//   { title: '电影3', director: '导演C', year: '2021' },
+//   { title: '电影4', director: '导演D', year: '2018' },
+//   { title: '电影5', director: '导演E', year: '2022' },];
+// };
+// Define an async function
+async function fetchData() {
+  try {
+    let params = {
+      year: 2012,
+    };
+
+    // Use await inside an async function
+    let res = await getMovieByYearApi(params);
+
+    if (res.data && res.data.movies && Array.isArray(res.data.movies)) {
+      res.data.movies.forEach(movie => {
+        console.log("Movie ID:", movie.movieID);
+        console.log("Title:", movie.title);
+        console.log("Release Date:", movie.releaseDate);
+        console.log("Movie Score:", movie.movieScore);
+        // Other properties...
+
+        console.log("-----------------------------");
+      });
+
+      searchResults.value = res.data.movies;
+    } else {
+      console.error("Invalid response format");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Call the async function
+fetchData();
 
 </script>
 
