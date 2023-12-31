@@ -79,7 +79,6 @@ export function getDirectorByMovieTitleApi(params) {
     })
 }
 
-// xx导演一共有哪些电影
 export function getMovieByDirectorApi(params) {
     return request({
         url: '/movieDirector/getMovieByDirector',
@@ -88,28 +87,11 @@ export function getMovieByDirectorApi(params) {
     })
 }
 
-export function getMovieByDirectorApiNeo4j(params) {
-    return request({
-        url: '/neo4j/person/directNum',
-        method: 'get',
-        params: {directName: params.director}
-    })
-}
-
-
 export function getMainActorByActorNameApi(params) {
     return request({
         url: '/movieActor/getMovieByActorName',
         method: 'get',
         params: {ActorName: params.ActorName}
-    })
-}
-
-export function getMovieByActorApiNeo4j(params) {
-    return request({
-        url: '/neo4j/person/actNum',
-        method: 'get',
-        params: {actorName: params.ActorName}
     })
 }
 
@@ -203,17 +185,5 @@ export function exampleForHive(params) {
         url: '/movieDate/yearMonth',
         method: 'get',
         params: {year: params.year, month: params.month}
-    })
-}
-
-
-
-
-// 按照电影风格进行查询并统计
-export function getMovieByStyleApiNeo4j(params) {
-    return request({
-        url: '/neo4j/type',
-        method: 'get',
-        params: {style: params.style}
     })
 }

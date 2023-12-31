@@ -124,8 +124,7 @@ import {
   getHigherMovieByMovieScoreApi,
   getMainActorActorByMovieTitleApi,
   getMainActorByActorNameApi,
-  getMovieByDirectorApi, getMovieByDirectorApiNeo4j,
-  getMovieByStyleApi, getMovieByActorApiNeo4j,
+  getMovieByDirectorApi, getMovieByStyleApi,
   getMovieByYearAndMonthApi,
   getMovieByYearAndSeasonApi,
   getMovieByYearApi, getMovieByYearDirectorStyleApi, getMovieByYearScoreApi, getMovieByYearUserNameApi,
@@ -136,7 +135,6 @@ import {
   getMoviesByHasPositiveCommentApi,
   getStyleFormatByMovieTitleApi, getTopTwentyMovieOnMostFrequentStyleApi
 } from "@/api/test";
-// import { ca } from 'element-plus/es/locale';
 // import axios from 'axios'; // 导入axios
 // import {
 //   getMovieByYearApi
@@ -624,39 +622,22 @@ async function search() {
     }
     else if(DBChoice.value==='3')
     {
-      res = await getMovieByDirectorApiNeo4j(params);
-      // console.log(res.data)
-      TimeForNeo4j.value=res.data.time
-      // console.log(TimeForNeo4j.value)
+      // res = await getMovieByDirectorApiNeo4j(params);
+      // TimeForNeo4j.value=res.data.elapsedTime
     }
 
     let resData = [];
-
-    try{
+    if (res.data) {
       let length = res.data.movieName.length;
-      if (res.data) {
       for (let i = 0; i < length; i++) {
         resData.push({
-            title: res.data.movieName[i],
-          });
-        }
-        searchResults.value = resData;
-      } else {
+          title: res.data.movieName[i],
+        });
+      }
+      searchResults.value = resData;
+    } else {
       console.error("Invalid response format");
     }
-    }catch{
-      let length = res.data["Nodes:"].length;
-      console.log(length)
-      for (let i = 0; i < length; i++) {
-        resData.push({
-            title: res.data["Nodes:"][i],
-          });
-        }
-        searchResults.value = resData;
-      }
-
-
-
   } else if (selectedItem.value === '4-1') {
     let params = {
       ActorName: queryArray[0],
@@ -674,19 +655,13 @@ async function search() {
     }
     else if(DBChoice.value==='3')
     {
-      res = await getMovieByActorApiNeo4j(params);
-      TimeForNeo4j.value=res.data.time
+      // res = await getMovieByDirectorApiNeo4j(params);
+      // TimeForNeo4j.value=res.data.elapsedTime
     }
 
     let resData = [];
-    try{
-      if (res.data) {
-      let length;
-      try{
-        length = res.data.movieName.length;
-      }catch{
-        length = res.data.Nodes.length
-      }
+    if (res.data) {
+      let length = res.data.movieName.length;
       for (let i = 0; i < length; i++) {
         resData.push({
           title: res.data.movieName[i],
@@ -696,18 +671,6 @@ async function search() {
     } else {
       console.error("Invalid response format");
     }
-    }
-    catch{
-      let length = res.data["Nodes:"].length;
-      console.log(length)
-      for (let i = 0; i < length; i++) {
-        resData.push({
-            title: res.data["Nodes:"][i],
-          });
-        }
-        searchResults.value = resData;
-    }
-
   } else if (selectedItem.value === '6-1') {
     let params = {
       style: queryArray[0],
