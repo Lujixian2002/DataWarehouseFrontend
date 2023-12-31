@@ -180,13 +180,10 @@ export function getMovieByYearUserNameApi(params) {
 
 }
 
-
-export function getActorByDirectorApi(params) {
-    return request({
-        url: '/movieActor/getActorByDirector',
+export function exampleForHive(params) {
+    return requestForHive({
+        url: '/movieDate/yearMonth',
         method: 'get',
-        params: {DirectorName: params.DirectorName}
+        params: {year: params.year, month: params.month}
     })
-
 }
-
