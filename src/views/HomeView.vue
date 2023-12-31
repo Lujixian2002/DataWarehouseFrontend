@@ -114,7 +114,7 @@
 import {ref} from 'vue'
 import {Search} from '@element-plus/icons-vue'
 import {
-  getActorByDirectorApi,
+  getActorByDirectorApi,getActorByDirectorApiNeo4j,
   getDirectorActorCommentRatingByMovieTitleApi,
   getDirectorByMovieTitleApi,
   getHigherMovieByMovieScoreApi,
@@ -129,7 +129,12 @@ import {
   getMoviesByHasALLPositiveCommentApi, getMoviesByHasMostPositiveCommentApi,
   getMoviesByHasNegativeCommentApi,
   getMoviesByHasPositiveCommentApi,
-  getStyleFormatByMovieTitleApi, getTopTwentyMovieOnMostFrequentStyleApi
+  getStyleFormatByMovieTitleApi, getTopTwentyMovieOnMostFrequentStyleApi,
+  // Neo4j
+  findMovieByDirectorApiNeo4j,
+  findMovieByActorApiNeo4j
+
+
 } from "@/api/test";
 import {
   getActorByDirectorApiHive,
@@ -179,13 +184,12 @@ const optionsContent = {
   'movieActorQueries': {
     '4-1': '1. xx演员一共有哪些电影',
   },
-  'movieStyleQueries': {
-    '6-1': '1. xx风格的电影有哪些',
-  },
   'movieActorDirectorQueries':{
     '5-1': '1. xx导演合作的演员有多少，从高到低排序，返回演员名称以及演员数量',
   },
-  // ... 根据需求继续添加更多选项 ...
+  'movieStyleQueries': {
+    '6-1': '1. xx风格的电影有哪些',
+  },
   'movieCommentsQueries': {
     '7-1': '1. 用户评分xx分以上的电影有哪些',
     '7-2': '2. 用户评价中有正面评价的电影有哪些',
@@ -677,40 +681,52 @@ async function search() {
     }
     else if(DBChoice.value==='3')
     {
-      // res = await getMovieByDirectorApiNeo4j(params);
-      // TimeForNeo4j.value=res.data.elapsedTime
+      res = await findMovieByDirectorApiNeo4j(params);
+      TimeForNeo4j.value=res.data.time
     }
 
     let resData = [];
+    // 关系型查询
     if (res.data) {
-      if(DBChoice.value==='1') {
-        let length = res.data.movieName.length;
-        for (let i = 0; i < length; i++) {
-          resData.push({
-            title: res.data.movieName[i],
-          });
-        }
+    if(DBChoice.value==='1') {
+      let length = res.data.movieName.length;
+      for (let i = 0; i < length; i++) {
+        resData.push({
+          title: res.data.movieName[i],
+        });
       }
-      else if(DBChoice.value==='2'){
-        let length = res.data.movies.length;
-        for (let i = 0; i < length; i++) {
-          resData.push({
-            title: res.data.movies[i].title,
-          });
-        }
-      }
-      if(TimeForMysql.value!==0&&TimeForHive.value!==0&&TimeForNeo4j.value!==0)
-      {
-        let max_time=Math.max(TimeForMysql.value,TimeForHive.value,TimeForNeo4j.value)
-        percentageForMysql.value=TimeForMysql.value/(max_time)*100
-        percentageForHive.value=TimeForHive.value/(max_time)*100
-        percentageForNeo4j.value=TimeForNeo4j.value/(max_time)*100
-      }
-
-      searchResults.value = resData;
-    } else {
-      console.error("Invalid response format");
     }
+    else if(DBChoice.value==='2'){
+      let length = res.data.movies.length;
+      for (let i = 0; i < length; i++) {
+        resData.push({
+          title: res.data.movies[i].title,
+        });
+      }
+    }
+    else if(DBChoice.value==='3'){
+      let length = res.data["Nodes:"].length;
+      console.log(length)
+      for (let i = 0; i < length; i++) {
+        resData.push({
+            title: res.data["Nodes:"][i],
+          });
+        }
+    }
+    
+    if(TimeForMysql.value!==0&&TimeForHive.value!==0&&TimeForNeo4j.value!==0)
+    {
+      let max_time=Math.max(TimeForMysql.value,TimeForHive.value,TimeForNeo4j.value)
+      percentageForMysql.value=TimeForMysql.value/(max_time)*100
+      percentageForHive.value=TimeForHive.value/(max_time)*100
+      percentageForNeo4j.value=TimeForNeo4j.value/(max_time)*100
+    }
+    searchResults.value = resData;
+  } else {
+    console.error("Invalid response format");
+  }
+
+
   } else if (selectedItem.value === '4-1') {
     let params = {
       ActorName: queryArray[0],
@@ -728,8 +744,9 @@ async function search() {
     }
     else if(DBChoice.value==='3')
     {
-      // res = await getMovieByDirectorApiNeo4j(params);
-      // TimeForNeo4j.value=res.data.elapsedTime
+      res = await findMovieByActorApiNeo4j(params);
+      TimeForNeo4j.value=res.data.time;
+      console.log(DBChoice.value)
     }
 
     let resData = [];
@@ -752,6 +769,15 @@ async function search() {
         });
       }
     }
+    else if(DBChoice.value==='3'){
+      let length = res.data["Nodes:"].length;
+      console.log(length)
+      for (let i = 0; i < length; i++) {
+        resData.push({
+            title: res.data["Nodes:"][i],
+          });
+        }
+    }
       if(TimeForMysql.value!==0&&TimeForHive.value!==0&&TimeForNeo4j.value!==0)
       {
         let max_time=Math.max(TimeForMysql.value,TimeForHive.value,TimeForNeo4j.value)
@@ -762,7 +788,7 @@ async function search() {
 
       searchResults.value = resData;
     } else {
-      console.error("Invalid response format");
+      console.error("4-1 Invalid response format");
     }
   }
   else if(selectedItem.value==='5-1')
@@ -783,12 +809,13 @@ async function search() {
     }
     else if(DBChoice.value==='3')
     {
-      // res = await getMovieByDirectorApiNeo4j(params);
-      // TimeForNeo4j.value=res.data.elapsedTime
+      res = await getActorByDirectorApiNeo4j(params);
+      TimeForNeo4j.value=res.data.time
     }
 
     let resData = [];
-    if (res.data) {
+    try{
+      if (res.data) {
       if(res.data.names===null)
       {
         return
@@ -813,6 +840,18 @@ async function search() {
     } else {
       console.error("Invalid response format");
     }
+    }catch{
+      // 图数据库处理
+      let length = res.data.length;
+      console.log(length)
+      for (let i = 0; i < length; i++) {
+        resData.push({
+            actor: res.data[i].name2,
+          });
+        }
+        searchResults.value = resData;
+    }
+
   }
   else if (selectedItem.value === '6-1') {
     let params = {

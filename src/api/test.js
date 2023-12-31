@@ -189,3 +189,55 @@ export function getActorByDirectorApi(params) {
 
 }
 
+
+/**
+ * Neo4j 
+ */
+// movie controller 
+// 6.1 通过找类型寻找电影
+export function findMovieByTypeApiNeo4j(params) {
+    return request({
+        url: '/neo4j/movie/type',
+        method: 'get',
+        params: {type: params.DirectorName}
+    })
+}
+
+// person controller
+// 3.1 查询导演所有电影数量
+export function findMovieByDirectorApiNeo4j(params) {
+    return request({
+        url: '/neo4j/person/directNum',
+        method: 'get',
+        params: {directName: params.director}
+    })
+}
+
+// 4.1 查询演员所有电影数量
+export function findMovieByActorApiNeo4j(params) {
+    return request({
+        url: '/neo4j/person/actNum',
+        method: 'get',
+        params: {actorName: params.ActorName}
+    })
+}
+
+// relationship controller
+// 5.1 通过导演名称寻找合作最多的演员
+export function getActorByDirectorApiNeo4j(params) {
+    return request({
+        url: '/neo4j/relation/directorAndActorByName',
+        method: 'get',
+        params: {name: params.DirectorName}
+    })
+}
+
+// 5.2 通过演员名称寻找合作最多的演员
+export function getCooperateActorsApiNeo4j(params) {
+    return request({
+        url: '/neo4j/relation/actorsByName',
+        method: 'get',
+        params: {name: params.DirectorName}
+    })
+
+}
