@@ -972,30 +972,48 @@ async function search() {
       style: queryArray[0],
     };
     let res;
+    let resData = [];
     if (DBChoice.value === '1') {
       res = await getMovieByStyleApi(params);
       TimeForMysql.value = res.data.elapsedTime
+      if (res.data) {
+        let length = res.data.movieName.length;
+        for (let i = 0; i < length; i++) {
+          resData.push({
+            title: res.data.movieName[i],
+          });
+        }
+        searchResults.value = resData;
+      }
     }
     else if (DBChoice.value === '2') {
       console.log(params)
       res = await getMovieByStyleApiHive(params);
       TimeForHive.value = res.data.elapsedTime
+      if (res.data) {
+        let length = res.data.movies.length;
+        for (let i = 0; i < length; i++) {
+          resData.push({
+            title: res.data.movies[i].title,
+          });
+        }
+        searchResults.value = resData;
+      }
     }
     else if (DBChoice.value === '3') {
       res = await findMovieByTypeApiNeo4j(params);
       TimeForNeo4j.value = res.data.time
-    }
-    let resData = [];
-    if (res.data) {
-      let length = res.data.movieName.length;
-      for (let i = 0; i < length; i++) {
-        resData.push({
-          title: res.data.movieName[i],
-        });
+      if (res.data) {
+        let length = res.data.Nodes.length;
+        for (let i = 0; i < length; i++) {
+          resData.push({
+            title: res.data.Nodes[i],
+          });
+        }
+        searchResults.value = resData;
+      } else {
+        console.error("Invalid response format");
       }
-      searchResults.value = resData;
-    } else {
-      console.error("Invalid response format");
     }
   } else if (selectedItem.value === '7-1') {
     let params = {
@@ -1005,11 +1023,13 @@ async function search() {
     let resData = [];
     if (res.data && res.data.movies && Array.isArray(res.data.movies)) {
       res.data.movies.forEach(movie => {
-        resData.push({
-          title: movie.title,
-          score: movie.movieScore,
-          year: movie.year,
-        });
+        if (movie.movieScore <= 5) {
+          resData.push({
+            title: movie.title,
+            score: movie.movieScore,
+            year: movie.year,
+          });
+        }
       });
 
       searchResults.value = resData;
@@ -1022,11 +1042,13 @@ async function search() {
     let resData = [];
     if (res.data && res.data.movies && Array.isArray(res.data.movies)) {
       res.data.movies.forEach(movie => {
-        resData.push({
-          title: movie.title,
-          score: movie.movieScore,
-          year: movie.year,
-        });
+        if (movie.movieScore <= 5) {
+          resData.push({
+            title: movie.title,
+            score: movie.movieScore,
+            year: movie.year,
+          });
+        }
       });
       searchDisabled.value = false;
       searchResults.value = resData;
@@ -1039,11 +1061,13 @@ async function search() {
     let resData = [];
     if (res.data && res.data.movies && Array.isArray(res.data.movies)) {
       res.data.movies.forEach(movie => {
-        resData.push({
-          title: movie.title,
-          score: movie.movieScore,
-          year: movie.year,
-        });
+        if (movie.movieScore <= 5) {
+          resData.push({
+            title: movie.title,
+            score: movie.movieScore,
+            year: movie.year,
+          });
+        }
       });
       searchDisabled.value = false;
       searchResults.value = resData;
@@ -1056,11 +1080,13 @@ async function search() {
     let resData = [];
     if (res.data && res.data.movies && Array.isArray(res.data.movies)) {
       res.data.movies.forEach(movie => {
-        resData.push({
-          title: movie.title,
-          score: movie.movieScore,
-          year: movie.year,
-        });
+        if (movie.movieScore <= 5) {
+          resData.push({
+            title: movie.title,
+            score: movie.movieScore,
+            year: movie.year,
+          });
+        }
       });
       searchDisabled.value = false;
       searchResults.value = resData;
@@ -1073,11 +1099,13 @@ async function search() {
     let resData = [];
     if (res.data && res.data.movies && Array.isArray(res.data.movies)) {
       res.data.movies.forEach(movie => {
-        resData.push({
-          title: movie.title,
-          score: movie.movieScore,
-          year: movie.year,
-        });
+        if (movie.movieScore <= 5) {
+          resData.push({
+            title: movie.title,
+            score: movie.movieScore,
+            year: movie.year,
+          });
+        }
       });
       searchDisabled.value = false;
       searchResults.value = resData;
@@ -1185,6 +1213,15 @@ async function search() {
 </script>
 
 <style>
+:deep(.el-table__header) {
+  width: 100% !important;
+}
+
+:deep(.el-table__body) {
+  width: 100% !important;
+}
+
+
 .container {
   display: flex;
 }

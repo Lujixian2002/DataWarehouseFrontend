@@ -199,7 +199,7 @@ export function findMovieByTypeApiNeo4j(params) {
     return request({
         url: '/neo4j/movie/type',
         method: 'get',
-        params: { type: params.DirectorName }
+        params: { type: params.style }
     })
 }
 
