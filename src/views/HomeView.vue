@@ -961,7 +961,8 @@ async function search() {
           comments: actors.times
         });
       });
-
+      TimeForNeo4j.value = res.data[0].queryTime
+      percentageForNeo4j.value = 100
       searchResults.value = resData;
     } else {
       console.error("Invalid response format");
