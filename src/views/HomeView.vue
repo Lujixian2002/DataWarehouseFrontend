@@ -100,97 +100,81 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import { Search } from '@element-plus/icons-vue'
+<script>
 // import axios from 'axios'; // 导入axios
-import { 
-  getMovieByYearApi
-} from "@/api/test.js";
+import { getMovieByYearApi } from "@/api/test.js";
 
-const activeName = ref('0')
-
-const selectedItem = ref('')
-const selectedContent = ref('')
-
-const optionsContent = {
-  'timeQueries': {
-    '1-1': '1. xx年有什么电影',
-    '1-2': '2. xx年xx月有什么电影',
-    '1-3': '3. xx年xx季度有什么电影',
-    '1-4': '4. 每一年发行的电影数量',
-    '1-5': '5. XX年内每个月发行的电影数量'
+export default {
+  components: {
   },
-  'movieNameQueries': {
-    '2-1': '1. xx电影有哪些版本和风格',
-    '2-2': '2. xx电影的主要信息',
-    '2-3': '3. xx电影的主演和参演演员名单',
-    '2-4': '4. xx电影的导演名单'
-  },
-  // ... 根据需求继续添加更多选项 ...
-  'movieCommentsQueries': {
-    '7-1': '1. 用户评分xx分以上的电影有哪些',
-    '7-2': '2. 用户评价中有正面评价的电影有哪些',
-    '7-3': '3. 用户评价中全是正面评价的电影有哪些',
-    '7-4': '4. 用户评价中有差评的电影有哪些',
-    '7-5': '5. 好评数最多的电影有哪些',
-  },
-};
-
-const selectItem = (key) => {
-  selectedItem.value = key;
-  selectedContent.value = Object.values(optionsContent)
-    .flatMap(group => group)
-    .find(content => content[key])[key];
-};
-
-const searchQuery = ref('');
-const searchResults = ref([]);
-const drawerVisible = ref(false);
-
-// const search = () => {
-//   // 调用后端接口进行查询
-//   // 更新 searchResults
-//   searchResults.value = [{ title: '电影1', director: '导演A', year: '2020' },
-//   { title: '电影2', director: '导演B', year: '2019' },
-//   { title: '电影3', director: '导演C', year: '2021' },
-//   { title: '电影4', director: '导演D', year: '2018' },
-//   { title: '电影5', director: '导演E', year: '2022' },];
-// };
-// Define an async function
-async function fetchData() {
-  try {
-    let params = {
-      year: 2012,
+  data() {
+    return {
+      activeName: '0',
+      selectedItem: '',
+      selectedContent: '',
+      searchQuery: '',
+      searchResults: [],
+      drawerVisible: false,
+      optionsContent: {
+        'timeQueries': {
+          '1-1': '1. xx年有什么电影',
+          '1-2': '2. xx年xx月有什么电影',
+          '1-3': '3. xx年xx季度有什么电影',
+          '1-4': '4. 每一年发行的电影数量',
+          '1-5': '5. XX年内每个月发行的电影数量'
+        },
+        'movieNameQueries': {
+          '2-1': '1. xx电影有哪些版本和风格',
+          '2-2': '2. xx电影的主要信息',
+          '2-3': '3. xx电影的主演和参演演员名单',
+          '2-4': '4. xx电影的导演名单'
+        },
+        // ... 根据需求继续添加更多选项 ...
+        'movieCommentsQueries': {
+          '7-1': '1. 用户评分xx分以上的电影有哪些',
+          '7-2': '2. 用户评价中有正面评价的电影有哪些',
+          '7-3': '3. 用户评价中全是正面评价的电影有哪些',
+          '7-4': '4. 用户评价中有差评的电影有哪些',
+          '7-5': '5. 好评数最多的电影有哪些',
+        }
+      },
     };
-
-    // Use await inside an async function
-    let res = await getMovieByYearApi(params);
-
-    if (res.data && res.data.movies && Array.isArray(res.data.movies)) {
-      res.data.movies.forEach(movie => {
-        console.log("Movie ID:", movie.movieID);
-        console.log("Title:", movie.title);
-        console.log("Release Date:", movie.releaseDate);
-        console.log("Movie Score:", movie.movieScore);
-        // Other properties...
-
-        console.log("-----------------------------");
-      });
-
-      searchResults.value = res.data.movies;
-    } else {
-      console.error("Invalid response format");
+  },
+  methods: {
+    selectItem(key) {
+      this.selectedItem = key;
+      this.selectedContent = Object.values(this.optionsContent)
+          .flatMap(group => group)
+          .find(content => content[key])[key];
+    },
+    async fetchData() {
+      try {
+        let params = { year: 2012 };
+        let res = await getMovieByYearApi(params);
+        if (res.data && res.data.movies && Array.isArray(res.data.movies)) {
+          res.data.movies.forEach(movie => {
+            console.log("Movie ID:", movie.movieID);
+            console.log("Title:", movie.title);
+            console.log("Release Date:", movie.releaseDate);
+            console.log("Movie Score:", movie.movieScore);
+            // Other properties...
+            console.log("-----------------------------");
+          });
+          this.searchResults = res.data.movies;
+        } else {
+          console.error("Invalid response format");
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
-  } catch (error) {
-    console.error(error);
+  },
+  mounted() {
+    this.fetchData();
   }
 }
-
-// Call the async function
-fetchData();
-
 </script>
+
 
 <style>
 .container {
