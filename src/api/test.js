@@ -1,5 +1,4 @@
 import request from "@/utils/request"
-import requestForHive from "@/utils/requestForHive";
 
 
 // 按照时间进行统计

@@ -76,7 +76,7 @@
         <el-table-column v-for="column in nowTableColums" :key="column.prop" :prop="column.prop" :label="column.label"
                          :width="column.width"/>
       </el-table>
-      <div v-show="showChoice">
+<!--      <div v-show="showChoice">-->
         <div v-show="nowradioOptions==='option1'">
           <el-progress :percentage="percentageForMysql" style="width: 800px">
             <el-button text>Mysql查询用时:{{TimeForMysql}}毫秒</el-button>
@@ -93,19 +93,24 @@
             <el-button text>Hive查询用时:{{TimeForHive}}毫秒</el-button>
           </el-progress>
           <el-progress :percentage="percentageForNeo4j" style="width: 800px">
-            <el-button text>Hive查询用时:{{TimeForNeo4j}}毫秒</el-button>
+            <el-button text>Neo4j查询用时:{{TimeForNeo4j}}毫秒</el-button>
+          </el-progress>
+        </div>'
+        <div v-show="nowradioOptions==='option3'">
+          <el-progress :percentage="percentageForNeo4j" style="width: 800px">
+            <el-button text>Neo4j查询用时:{{TimeForNeo4j}}毫秒</el-button>
           </el-progress>
         </div>
-      </div>
+<!--      </div>-->
       <!-- 触发抽屉的按钮 -->
-      <div class="drawer-button">
-        <el-button @click="drawerVisible = true">展开抽屉</el-button>
-      </div>
+<!--      <div class="drawer-button">-->
+<!--        <el-button @click="drawerVisible = true">展开抽屉</el-button>-->
+<!--      </div>-->
 
-      <!-- 抽屉组件 -->
-      <el-drawer v-model="drawerVisible" title="查询对比" :direction="'btt'" size="50%">
-        <span>Hi, there!</span>
-      </el-drawer>
+<!--      &lt;!&ndash; 抽屉组件 &ndash;&gt;-->
+<!--      <el-drawer v-model="drawerVisible" title="查询对比" :direction="'btt'" size="50%">-->
+<!--        <span>Hi, there!</span>-->
+<!--      </el-drawer>-->
     </div>
   </div>
 </template>
@@ -194,8 +199,8 @@ const optionsContent = {
   'movieActorDirectorQueries':{
     '5-1': '1. 查询经常合作的演员',
     '5-2': '2. 查询经常合作的演员和导演',
-    '5-3': '3. 查询经常和某一个演员合作的演员（按姓名）',
-    '5-4': '4. 查询经常和某一个导演合作的演员 （按姓名）',
+    '5-3': '3. 查询经常和某一个导演合作的演员（按姓名）',
+    '5-4': '4. 查询经常和某一个演员合作的演员（按姓名）',
     '5-5': '5. 查找某一个类型电影，最受关注的演员两人组，前100名',
     '5-6': '6. 查找某一个类型电影，最受关注的演员三人组，前100名',
   },
@@ -266,7 +271,34 @@ const tableColums = {
     {prop: 'title', label: '电影名称'},
   ],
   '5-1': [
+    {prop: 'actor1', label: '演员1'},
+    {prop: 'actor2', label: '演员2'},
+    {prop: 'times', label: '合作次数'},
+  ],
+  '5-2': [
     {prop: 'actor', label: '演员'},
+    {prop: 'director', label: '导演'},
+    {prop: 'times', label: '合作次数'},
+  ],
+  '5-3': [
+    {prop: 'actor', label: '演员'},
+    {prop: 'times', label: '合作次数'},
+  ],
+  '5-4': [
+    {prop: 'actor1', label: '演员1'},
+    {prop: 'actor2', label: '演员2'},
+    {prop: 'times', label: '合作次数'},
+  ],
+  '5-5':[
+    {prop:'actor1', label:'演员1'},
+    {prop:'actor2', label:'演员2'},
+    {prop:'comments', label:'评论数'},
+  ],
+  '5-6':[
+    {prop:'actor1', label:'演员1'},
+    {prop:'actor2', label:'演员2'},
+    {prop:'actor3', label:'演员3'},
+    {prop:'comments', label:'评论数'},
   ],
   '6-1': [
     {prop: 'title', label: '电影名称'},
@@ -353,7 +385,7 @@ const selectItem = (key) => {
 
 const searchQuery = ref('');
 const searchResults = ref([]);
-const drawerVisible = ref(false);
+// const drawerVisible = ref(false);
 const searchDisabled = ref(false);
 const showChoice = ref(false);
 
@@ -804,30 +836,33 @@ async function search() {
     }
   }
   else if (selectedItem.value === '5-1') {
+    nowradioOptions.value='option3'
     let res = await getActorAndActorApiNeo4j();
     let resData = [];
     if (res.data) {
       res.data.forEach(actors => {
         resData.push({
-          actor1: actors.Name1,
-          actor2: actors.Name2,
+          actor1: actors.name1,
+          actor2: actors.name2,
           times: actors.times
         });
       });
-
+      TimeForNeo4j.value = res.data[0].queryTime
+      percentageForNeo4j.value = 100
       searchResults.value = resData;
     } else {
       console.error("Invalid response format");
     }
   }
   else if (selectedItem.value === '5-2') {
+    nowradioOptions.value='option3'
     let res = await getActorAndDirectorApiNeo4j();
     let resData = [];
     if (res.data) {
       res.data.forEach(actors => {
         resData.push({
-          actor: actors.Name1,
-          director: actors.Name2,
+          actor: actors.name1,
+          director: actors.name2,
           times: actors.times
         });
       });
@@ -843,6 +878,7 @@ async function search() {
       DirectorName: queryArray[0],
     };
     let res;
+    let resData = [];
     if(DBChoice.value==='1')
     {
       res = await getActorByDirectorApi(params);
@@ -857,49 +893,31 @@ async function search() {
     {
       res = await getActorByDirectorApiNeo4j(params);
       TimeForNeo4j.value=res.data.time
+      if(res.data){
+        res.data.forEach(item =>{
+          resData.push({
+            actor: item.name2,
+            times: item.times
+          })
+        })
+      }
+      TimeForNeo4j.value = res.data[0].queryTime
+      console.log(TimeForNeo4j)
+    }
+    if(TimeForMysql.value!==0&&TimeForHive.value!==0&&TimeForNeo4j.value!==0)
+    {
+      let max_time=Math.max(TimeForMysql.value,TimeForHive.value,TimeForNeo4j.value)
+      percentageForMysql.value=TimeForMysql.value/(max_time)*100
+      percentageForHive.value=TimeForHive.value/(max_time)*100
+      percentageForNeo4j.value=TimeForNeo4j.value/(max_time)*100
     }
 
-    let resData = [];
-    try{
-      if (res.data) {
-      if(res.data.names===null)
-      {
-        return
-      }
-      let length = res.data.names.length;
-      for (let i = 0; i < length; i++) {
-        resData.push({
-          actor: res.data.names[i],
-        });
-      }
+    searchResults.value = resData;
 
-
-      if(TimeForMysql.value!==0&&TimeForHive.value!==0&&TimeForNeo4j.value!==0)
-      {
-        let max_time=Math.max(TimeForMysql.value,TimeForHive.value,TimeForNeo4j.value)
-        percentageForMysql.value=TimeForMysql.value/(max_time)*100
-        percentageForHive.value=TimeForHive.value/(max_time)*100
-        percentageForNeo4j.value=TimeForNeo4j.value/(max_time)*100
-      }
-
-      searchResults.value = resData;
-    } else {
-      console.error("Invalid response format");
-    }
-    }catch{
-      // 图数据库处理
-      let length = res.data.length;
-      console.log(length)
-      for (let i = 0; i < length; i++) {
-        resData.push({
-            actor: res.data[i].name2,
-          });
-        }
-        searchResults.value = resData;
-    }
 
   }
   else if (selectedItem.value === '5-4') {
+    nowradioOptions.value='option3'
     let params = {
       ActorName: queryArray[0],
     };
@@ -908,8 +926,8 @@ async function search() {
     if (res.data) {
       res.data.forEach(actors => {
         resData.push({
-          actor1: actors.Name1,
-          actor2: actors.Name2,
+          actor1: actors.name1,
+          actor2: actors.name2,
           times: actors.times
         });
       });
@@ -920,6 +938,7 @@ async function search() {
     }
   }
   else if (selectedItem.value === '5-5') {
+    nowradioOptions.value='option3'
     let params = {
       Style: queryArray[0],
     };
@@ -928,18 +947,24 @@ async function search() {
     if (res.data) {
       res.data.forEach(actors => {
         resData.push({
-          actor1: actors.Name1,
-          actor2: actors.Name2,
-          comments: actors.times
+          actor1: actors.name1,
+          actor2: actors.name2,
+          comments: actors.times,
+          // queryTime: actors.queryTime
         });
       });
-
       searchResults.value = resData;
+      TimeForNeo4j.value = res.data[0].queryTime
+      if(TimeForNeo4j.value!==0)
+      {
+        percentageForNeo4j.value=1
+      }
     } else {
       console.error("Invalid response format");
     }
   }
   else if (selectedItem.value === '5-6') {
+    nowradioOptions.value='option3'
     let params = {
       Style: queryArray[0],
     };
@@ -948,9 +973,9 @@ async function search() {
     if (res.data) {
       res.data.forEach(actors => {
         resData.push({
-          actor1: actors.Name1,
-          actor2: actors.Name2,
-          actor3: actors.Name3,
+          actor1: actors.name1,
+          actor2: actors.name2,
+          actor3: actors.name3,
           comments: actors.times
         });
       });
