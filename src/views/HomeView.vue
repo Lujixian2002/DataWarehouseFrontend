@@ -923,7 +923,7 @@ async function search() {
     let params = {
       Style: queryArray[0],
     };
-    let res = await getCooperateActorsApiNeo4j(params);
+    let res = await getActorsTwoByCommentsApiNeo4j(params);
     let resData = [];
     if (res.data) {
       res.data.forEach(actors => {
@@ -943,7 +943,7 @@ async function search() {
     let params = {
       Style: queryArray[0],
     };
-    let res = await getCooperateActorsApiNeo4j(params);
+    let res = await getActorsThreeByCommentsApiNeo4j(params);
     let resData = [];
     if (res.data) {
       res.data.forEach(actors => {
