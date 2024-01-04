@@ -1,4 +1,5 @@
 import request from "@/utils/request"
+import requestForHive from "@/utils/requestForHive";
 
 
 // 按照时间进行统计
@@ -191,9 +192,9 @@ export function getActorByDirectorApi(params) {
 
 
 /**
- * Neo4j 
+ * Neo4j
  */
-// movie controller 
+// movie controller
 // 6.1 通过找类型寻找电影
 export function findMovieByTypeApiNeo4j(params) {
     return request({
@@ -223,7 +224,29 @@ export function findMovieByActorApiNeo4j(params) {
 }
 
 // relationship controller
-// 5.1 通过导演名称寻找合作最多的演员
+//合作最多的演员
+export function getActorAndActorApiNeo4j() {
+    return request({
+        url: '/neo4j/relation/actors',
+        method: 'get',
+    })
+}
+//合作最多的导演和演员
+export function getActorAndDirectorApiNeo4j() {
+    return request({
+        url: '/neo4j/relation/actorAndDirector',
+        method: 'get',
+    })
+}
+// 5.3 通过演员名称寻找合作最多的演员
+export function getCooperateActorsApiNeo4j(params) {
+    return request({
+        url: '/neo4j/relation/actorsByName',
+        method: 'get',
+        params: {name: params.ActorName}
+    })
+}
+// 5.4 通过导演名称寻找合作最多的演员
 export function getActorByDirectorApiNeo4j(params) {
     return request({
         url: '/neo4j/relation/directorAndActorByName',
@@ -231,13 +254,19 @@ export function getActorByDirectorApiNeo4j(params) {
         params: {name: params.DirectorName}
     })
 }
-
-// 5.2 通过演员名称寻找合作最多的演员
-export function getCooperateActorsApiNeo4j(params) {
+//5. 寻找某一类型最受关注(评论最多)的演员组合，两人组合，前100名
+export function getActorsTwoByCommentsApiNeo4j(params) {
     return request({
-        url: '/neo4j/relation/actorsByName',
+        url: '/neo4j/relation/actorsTwoByComments',
         method: 'get',
-        params: {name: params.DirectorName}
+        params: {style: params.Style}
     })
-
+}
+//6. 寻找某一类型最受关注(评论最多)的演员组合，三人组合，前100名
+export function getActorsThreeByCommentsApiNeo4j(params) {
+    return request({
+        url: '/neo4j/relation/actorsThreeByComments',
+        method: 'get',
+        params: {style: params.Style}
+    })
 }

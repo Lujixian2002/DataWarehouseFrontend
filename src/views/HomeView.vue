@@ -114,7 +114,7 @@
 import {ref} from 'vue'
 import {Search} from '@element-plus/icons-vue'
 import {
-  getActorByDirectorApi,getActorByDirectorApiNeo4j,
+  getActorByDirectorApi,
   getDirectorActorCommentRatingByMovieTitleApi,
   getDirectorByMovieTitleApi,
   getHigherMovieByMovieScoreApi,
@@ -133,9 +133,14 @@ import {
   // Neo4j
   findMovieByDirectorApiNeo4j,
   findMovieByActorApiNeo4j,
-  findMovieByTypeApiNeo4j
-
-
+  findMovieByTypeApiNeo4j,
+  //合作关系
+  getActorAndActorApiNeo4j,
+  getActorAndDirectorApiNeo4j,
+  getCooperateActorsApiNeo4j,
+  getActorByDirectorApiNeo4j,
+  getActorsTwoByCommentsApiNeo4j,
+  getActorsThreeByCommentsApiNeo4j
 } from "@/api/test";
 import {
   getActorByDirectorApiHive,
@@ -187,7 +192,12 @@ const optionsContent = {
     '4-1': '1. xx演员一共有哪些电影',
   },
   'movieActorDirectorQueries':{
-    '5-1': '1. xx导演合作的演员有多少，从高到低排序，返回演员名称以及演员数量',
+    '5-1': '1. 查询经常合作的演员',
+    '5-2': '2. 查询经常合作的演员和导演',
+    '5-3': '3. 查询经常和某一个演员合作的演员（按姓名）',
+    '5-4': '4. 查询经常和某一个导演合作的演员 （按姓名）',
+    '5-5': '5. 查找某一个类型电影，最受关注的演员两人组，前100名',
+    '5-6': '6. 查找某一个类型电影，最受关注的演员三人组，前100名',
   },
   'movieStyleQueries': {
     '6-1': '1. xx风格的电影有哪些',
@@ -308,7 +318,7 @@ const tableColums = {
 }
 
 const optionOneIndex=['1-1','1-2','1-3','2-1','2-3','2-4'];
-const optionTwoIndex=['3-1','4-1','5-1','6-1'];
+const optionTwoIndex=['3-1','4-1','5-3','6-1'];
 
 const selectItem = (key) => {
   selectedItem.value = key;
@@ -793,7 +803,41 @@ async function search() {
       console.error("4-1 Invalid response format");
     }
   }
-  else if(selectedItem.value==='5-1')
+  else if (selectedItem.value === '5-1') {
+    let res = await getActorAndActorApiNeo4j();
+    let resData = [];
+    if (res.data) {
+      res.data.forEach(actors => {
+        resData.push({
+          actor1: actors.Name1,
+          actor2: actors.Name2,
+          times: actors.times
+        });
+      });
+
+      searchResults.value = resData;
+    } else {
+      console.error("Invalid response format");
+    }
+  }
+  else if (selectedItem.value === '5-2') {
+    let res = await getActorAndDirectorApiNeo4j();
+    let resData = [];
+    if (res.data) {
+      res.data.forEach(actors => {
+        resData.push({
+          actor: actors.Name1,
+          director: actors.Name2,
+          times: actors.times
+        });
+      });
+
+      searchResults.value = resData;
+    } else {
+      console.error("Invalid response format");
+    }
+  }
+  else if(selectedItem.value==='5-3')
   {
     let params = {
       DirectorName: queryArray[0],
@@ -854,6 +898,67 @@ async function search() {
         searchResults.value = resData;
     }
 
+  }
+  else if (selectedItem.value === '5-4') {
+    let params = {
+      ActorName: queryArray[0],
+    };
+    let res = await getCooperateActorsApiNeo4j(params);
+    let resData = [];
+    if (res.data) {
+      res.data.forEach(actors => {
+        resData.push({
+          actor1: actors.Name1,
+          actor2: actors.Name2,
+          times: actors.times
+        });
+      });
+
+      searchResults.value = resData;
+    } else {
+      console.error("Invalid response format");
+    }
+  }
+  else if (selectedItem.value === '5-5') {
+    let params = {
+      Style: queryArray[0],
+    };
+    let res = await getCooperateActorsApiNeo4j(params);
+    let resData = [];
+    if (res.data) {
+      res.data.forEach(actors => {
+        resData.push({
+          actor1: actors.Name1,
+          actor2: actors.Name2,
+          comments: actors.times
+        });
+      });
+
+      searchResults.value = resData;
+    } else {
+      console.error("Invalid response format");
+    }
+  }
+  else if (selectedItem.value === '5-6') {
+    let params = {
+      Style: queryArray[0],
+    };
+    let res = await getCooperateActorsApiNeo4j(params);
+    let resData = [];
+    if (res.data) {
+      res.data.forEach(actors => {
+        resData.push({
+          actor1: actors.Name1,
+          actor2: actors.Name2,
+          actor3: actors.Name3,
+          comments: actors.times
+        });
+      });
+
+      searchResults.value = resData;
+    } else {
+      console.error("Invalid response format");
+    }
   }
   else if (selectedItem.value === '6-1') {
     let params = {

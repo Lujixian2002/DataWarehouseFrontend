@@ -90,3 +90,5 @@ export function getMovieByStyleApiHive(params) {
         params: {Style: params.style}
     })
 }
+
+
