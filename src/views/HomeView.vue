@@ -4,49 +4,49 @@
       <el-collapse v-model="activeName" accordion>
         <el-collapse-item title="按照时间进行查询和统计" name="1">
           <div v-for="(content, key) in optionsContent.timeQueries" :key="key" @click="selectItem(key)"
-               :class="{ highlighted: selectedItem === key }">
+            :class="{ highlighted: selectedItem === key }">
             {{ content }}
           </div>
         </el-collapse-item>
         <el-collapse-item title="按照电影名称进行查询及统计" name="2">
           <div v-for="(content, key) in optionsContent.movieNameQueries" :key="key" @click="selectItem(key)"
-               :class="{ highlighted: selectedItem === key }">
+            :class="{ highlighted: selectedItem === key }">
             {{ content }}
           </div>
         </el-collapse-item>
         <el-collapse-item title="按照导演进行查询及统计" name="3">
           <div v-for="(content, key) in optionsContent.movieDirectorQueries" :key="key" @click="selectItem(key)"
-               :class="{ highlighted: selectedItem === key }">
+            :class="{ highlighted: selectedItem === key }">
             {{ content }}
           </div>
         </el-collapse-item>
         <el-collapse-item title="按照演员进行查询及统计" name="4">
           <div v-for="(content, key) in optionsContent.movieActorQueries" :key="key" @click="selectItem(key)"
-               :class="{ highlighted: selectedItem === key }">
+            :class="{ highlighted: selectedItem === key }">
             {{ content }}
           </div>
         </el-collapse-item>
         <el-collapse-item title="按照演员和导演的关系进行查询及统计" name="5">
           <div v-for="(content, key) in optionsContent.movieActorDirectorQueries" :key="key" @click="selectItem(key)"
-               :class="{ highlighted: selectedItem === key }">
+            :class="{ highlighted: selectedItem === key }">
             {{ content }}
           </div>
         </el-collapse-item>
         <el-collapse-item title="按照电影类别进行查询及统计" name="6">
           <div v-for="(content, key) in optionsContent.movieStyleQueries" :key="key" @click="selectItem(key)"
-               :class="{ highlighted: selectedItem === key }">
+            :class="{ highlighted: selectedItem === key }">
             {{ content }}
           </div>
         </el-collapse-item>
         <el-collapse-item title="按照用户评价进行查询及统计" name="7">
           <div v-for="(content, key) in optionsContent.movieCommentsQueries" :key="key" @click="selectItem(key)"
-               :class="{ highlighted: selectedItem === key }">
+            :class="{ highlighted: selectedItem === key }">
             {{ content }}
           </div>
         </el-collapse-item>
         <el-collapse-item title="按照上述条件的组合查询和统计" name="9">
           <div v-for="(content, key) in optionsContent.movieCombinedQueries" :key="key" @click="selectItem(key)"
-               :class="{ highlighted: selectedItem === key }">
+            :class="{ highlighted: selectedItem === key }">
             {{ content }}
           </div>
         </el-collapse-item>
@@ -74,50 +74,50 @@
       <!-- 搜索结果表格 -->
       <el-table :data="searchResults" style="max-height: 300px; overflow-y: auto;">
         <el-table-column v-for="column in nowTableColums" :key="column.prop" :prop="column.prop" :label="column.label"
-                         :width="column.width"/>
+          :width="column.width" />
       </el-table>
-<!--      <div v-show="showChoice">-->
-        <div v-show="nowradioOptions==='option1'">
-          <el-progress :percentage="percentageForMysql" style="width: 800px">
-            <el-button text>Mysql查询用时:{{TimeForMysql}}毫秒</el-button>
-          </el-progress>
-          <el-progress :percentage="percentageForHive" style="width: 800px">
-            <el-button text>Hive查询用时:{{TimeForHive}}毫秒</el-button>
-          </el-progress>
-        </div>
-        <div v-show="nowradioOptions==='option2'">
-          <el-progress :percentage="percentageForMysql" style="width: 800px">
-            <el-button text>Mysql查询用时:{{TimeForMysql}}毫秒</el-button>
-          </el-progress>
-          <el-progress :percentage="percentageForHive" style="width: 800px">
-            <el-button text>Hive查询用时:{{TimeForHive}}毫秒</el-button>
-          </el-progress>
-          <el-progress :percentage="percentageForNeo4j" style="width: 800px">
-            <el-button text>Neo4j查询用时:{{TimeForNeo4j}}毫秒</el-button>
-          </el-progress>
-        </div>'
-        <div v-show="nowradioOptions==='option3'">
-          <el-progress :percentage="percentageForNeo4j" style="width: 800px">
-            <el-button text>Neo4j查询用时:{{TimeForNeo4j}}毫秒</el-button>
-          </el-progress>
-        </div>
-<!--      </div>-->
+      <!--      <div v-show="showChoice">-->
+      <div v-show="nowradioOptions === 'option1'">
+        <el-progress :percentage="percentageForMysql" style="width: 800px">
+          <el-button text>Mysql查询用时:{{ TimeForMysql }}毫秒</el-button>
+        </el-progress>
+        <el-progress :percentage="percentageForHive" style="width: 800px">
+          <el-button text>Hive查询用时:{{ TimeForHive }}毫秒</el-button>
+        </el-progress>
+      </div>
+      <div v-show="nowradioOptions === 'option2'">
+        <el-progress :percentage="percentageForMysql" style="width: 800px">
+          <el-button text>Mysql查询用时:{{ TimeForMysql }}毫秒</el-button>
+        </el-progress>
+        <el-progress :percentage="percentageForHive" style="width: 800px">
+          <el-button text>Hive查询用时:{{ TimeForHive }}毫秒</el-button>
+        </el-progress>
+        <el-progress :percentage="percentageForNeo4j" style="width: 800px">
+          <el-button text>Neo4j查询用时:{{ TimeForNeo4j }}毫秒</el-button>
+        </el-progress>
+      </div>'
+      <div v-show="nowradioOptions === 'option3'">
+        <el-progress :percentage="percentageForNeo4j" style="width: 800px">
+          <el-button text>Neo4j查询用时:{{ TimeForNeo4j }}毫秒</el-button>
+        </el-progress>
+      </div>
+      <!--      </div>-->
       <!-- 触发抽屉的按钮 -->
-<!--      <div class="drawer-button">-->
-<!--        <el-button @click="drawerVisible = true">展开抽屉</el-button>-->
-<!--      </div>-->
+      <!--      <div class="drawer-button">-->
+      <!--        <el-button @click="drawerVisible = true">展开抽屉</el-button>-->
+      <!--      </div>-->
 
-<!--      &lt;!&ndash; 抽屉组件 &ndash;&gt;-->
-<!--      <el-drawer v-model="drawerVisible" title="查询对比" :direction="'btt'" size="50%">-->
-<!--        <span>Hi, there!</span>-->
-<!--      </el-drawer>-->
+      <!--      &lt;!&ndash; 抽屉组件 &ndash;&gt;-->
+      <!--      <el-drawer v-model="drawerVisible" title="查询对比" :direction="'btt'" size="50%">-->
+      <!--        <span>Hi, there!</span>-->
+      <!--      </el-drawer>-->
     </div>
   </div>
 </template>
 
 <script setup>
-import {ref} from 'vue'
-import {Search} from '@element-plus/icons-vue'
+import { ref } from 'vue'
+import { Search } from '@element-plus/icons-vue'
 import {
   getActorByDirectorApi,
   getDirectorActorCommentRatingByMovieTitleApi,
@@ -196,7 +196,7 @@ const optionsContent = {
   'movieActorQueries': {
     '4-1': '1. xx演员一共有哪些电影',
   },
-  'movieActorDirectorQueries':{
+  'movieActorDirectorQueries': {
     '5-1': '1. 查询经常合作的演员',
     '5-2': '2. 查询经常合作的演员和导演',
     '5-3': '3. 查询经常和某一个导演合作的演员（按姓名）',
@@ -224,162 +224,160 @@ const optionsContent = {
 
 const tableColums = {
   '1-1': [
-    {prop: 'title', label: '电影名称'},
-    {prop: 'score', label: '评分'},
-    {prop: 'month', label: '发行月份'},
+    { prop: 'title', label: '电影名称' },
+    { prop: 'score', label: '评分' },
+    { prop: 'month', label: '发行月份' },
   ],
   '1-2': [
-    {prop: 'title', label: '电影名称'},
-    {prop: 'score', label: '评分'},
-    {prop: 'month', label: '发行月份'},
+    { prop: 'title', label: '电影名称' },
+    { prop: 'score', label: '评分' },
+    { prop: 'month', label: '发行月份' },
   ],
   '1-3': [
-    {prop: 'title', label: '电影名称'},
-    {prop: 'score', label: '评分'},
-    {prop: 'month', label: '发行月份'},
+    { prop: 'title', label: '电影名称' },
+    { prop: 'score', label: '评分' },
+    { prop: 'month', label: '发行月份' },
   ],
   '1-4': [
-    {prop: 'year', label: '发行年份'},
-    {prop: 'count', label: '发行数量'},
+    { prop: 'year', label: '发行年份' },
+    { prop: 'count', label: '发行数量' },
   ],
   '1-5': [
-    {prop: 'year', label: '发行年份'},
-    {prop: 'month', label: '发行月份'},
-    {prop: 'count', label: '发行数量'},
+    { prop: 'year', label: '发行年份' },
+    { prop: 'month', label: '发行月份' },
+    { prop: 'count', label: '发行数量' },
   ],
   '2-1': [
-    {prop: 'format', label: '版本'},
-    {prop: 'style', label: '风格'},
+    { prop: 'format', label: '版本' },
+    { prop: 'style', label: '风格' },
   ],
   '2-2': [
-    {prop: 'directorNum', label: '导演数量'},
-    {prop: 'actorNum', label: '演员数量'},
-    {prop: 'commentNum', label: '评论数量'},
-    {prop: 'rating', label: '评分'},
+    { prop: 'directorNum', label: '导演数量' },
+    { prop: 'actorNum', label: '演员数量' },
+    { prop: 'commentNum', label: '评论数量' },
+    { prop: 'rating', label: '评分' },
   ],
   '2-3': [
-    {prop: 'mainActor', label: '主要演员'},
-    {prop: 'actor', label: '演员'},
+    { prop: 'mainActor', label: '主要演员' },
+    { prop: 'actor', label: '演员' },
   ],
   '2-4': [
-    {prop: 'director', label: '导演'},
+    { prop: 'director', label: '导演' },
   ],
   '3-1': [
-    {prop: 'title', label: '电影名称'},
+    { prop: 'title', label: '电影名称' },
   ],
   '4-1': [
-    {prop: 'title', label: '电影名称'},
+    { prop: 'title', label: '电影名称' },
   ],
   '5-1': [
-    {prop: 'actor1', label: '演员1'},
-    {prop: 'actor2', label: '演员2'},
-    {prop: 'times', label: '合作次数'},
+    { prop: 'actor1', label: '演员1' },
+    { prop: 'actor2', label: '演员2' },
+    { prop: 'times', label: '合作次数' },
   ],
   '5-2': [
-    {prop: 'actor', label: '演员'},
-    {prop: 'director', label: '导演'},
-    {prop: 'times', label: '合作次数'},
+    { prop: 'actor', label: '演员' },
+    { prop: 'director', label: '导演' },
+    { prop: 'times', label: '合作次数' },
   ],
   '5-3': [
-    {prop: 'actor', label: '演员'},
-    {prop: 'times', label: '合作次数'},
+    { prop: 'actor', label: '演员' },
+    { prop: 'times', label: '合作次数' },
   ],
   '5-4': [
-    {prop: 'actor1', label: '演员1'},
-    {prop: 'actor2', label: '演员2'},
-    {prop: 'times', label: '合作次数'},
+    { prop: 'actor1', label: '演员1' },
+    { prop: 'actor2', label: '演员2' },
+    { prop: 'times', label: '合作次数' },
   ],
-  '5-5':[
-    {prop:'actor1', label:'演员1'},
-    {prop:'actor2', label:'演员2'},
-    {prop:'comments', label:'评论数'},
+  '5-5': [
+    { prop: 'actor1', label: '演员1' },
+    { prop: 'actor2', label: '演员2' },
+    { prop: 'comments', label: '评论数' },
   ],
-  '5-6':[
-    {prop:'actor1', label:'演员1'},
-    {prop:'actor2', label:'演员2'},
-    {prop:'actor3', label:'演员3'},
-    {prop:'comments', label:'评论数'},
+  '5-6': [
+    { prop: 'actor1', label: '演员1' },
+    { prop: 'actor2', label: '演员2' },
+    { prop: 'actor3', label: '演员3' },
+    { prop: 'comments', label: '评论数' },
   ],
   '6-1': [
-    {prop: 'title', label: '电影名称'},
+    { prop: 'title', label: '电影名称' },
   ],
   '7-1': [
-    {prop: 'title', label: '电影名称'},
-    {prop: 'score', label: '评分'},
-    {prop: 'year', label: '发行年份'},
+    { prop: 'title', label: '电影名称' },
+    { prop: 'score', label: '评分' },
+    { prop: 'year', label: '发行年份' },
   ],
   '7-2': [
-    {prop: 'title', label: '电影名称'},
-    {prop: 'score', label: '评分'},
-    {prop: 'year', label: '发行年份'},
+    { prop: 'title', label: '电影名称' },
+    { prop: 'score', label: '评分' },
+    { prop: 'year', label: '发行年份' },
   ],
   '7-3': [
-    {prop: 'title', label: '电影名称'},
-    {prop: 'score', label: '评分'},
-    {prop: 'year', label: '发行年份'},
+    { prop: 'title', label: '电影名称' },
+    { prop: 'score', label: '评分' },
+    { prop: 'year', label: '发行年份' },
   ],
   '7-4': [
-    {prop: 'title', label: '电影名称'},
-    {prop: 'score', label: '评分'},
-    {prop: 'year', label: '发行年份'},
+    { prop: 'title', label: '电影名称' },
+    { prop: 'score', label: '评分' },
+    { prop: 'year', label: '发行年份' },
   ],
   '7-5': [
-    {prop: 'title', label: '电影名称'},
-    {prop: 'score', label: '评分'},
-    {prop: 'year', label: '发行年份'},
+    { prop: 'title', label: '电影名称' },
+    { prop: 'score', label: '评分' },
+    { prop: 'year', label: '发行年份' },
   ],
   '9-1': [
-    {prop: 'title', label: '电影名称'},
-    {prop: 'score', label: '评分'},
-    {prop: 'year', label: '发行年份'},
+    { prop: 'title', label: '电影名称' },
+    { prop: 'score', label: '评分' },
+    { prop: 'year', label: '发行年份' },
   ],
   '9-2': [
-    {prop: 'style', label: '类别'},
-    {prop: 'title', label: '电影名称'},
+    { prop: 'style', label: '类别' },
+    { prop: 'title', label: '电影名称' },
   ],
   '9-3': [
-    {prop: 'title', label: '电影名称'},
-    {prop: 'score', label: '评分'},
-    {prop: 'year', label: '发行年份'},
+    { prop: 'title', label: '电影名称' },
+    { prop: 'score', label: '评分' },
+    { prop: 'year', label: '发行年份' },
   ],
   '9-4': [
-    {prop: 'title', label: '电影名称'},
-    {prop: 'score', label: '评分'},
-    {prop: 'year', label: '发行年份'},
+    { prop: 'title', label: '电影名称' },
+    { prop: 'score', label: '评分' },
+    { prop: 'year', label: '发行年份' },
   ],
 }
 
-const optionOneIndex=['1-1','1-2','1-3','2-1','2-3','2-4'];
-const optionTwoIndex=['3-1','4-1','5-3','6-1'];
+const optionOneIndex = ['1-1', '1-2', '1-3', '2-1', '2-3', '2-4'];
+const optionTwoIndex = ['3-1', '4-1', '5-3', '6-1'];
 
 const selectItem = (key) => {
   selectedItem.value = key;
   selectedContent.value = Object.values(optionsContent)
-      .flatMap(group => group)
-      .find(content => content[key])[key];
+    .flatMap(group => group)
+    .find(content => content[key])[key];
   selectedTableColums.value = key
   nowTableColums.value = tableColums[selectedTableColums.value]
 
-  if(optionOneIndex.includes(key))
-  {
-    showChoice.value=true
-    nowradioOptions.value='option1'
+  if (optionOneIndex.includes(key)) {
+    showChoice.value = true
+    nowradioOptions.value = 'option1'
   }
-  else if(optionTwoIndex.includes(key))
-  {
-    showChoice.value=true
-    nowradioOptions.value='option2'
+  else if (optionTwoIndex.includes(key)) {
+    showChoice.value = true
+    nowradioOptions.value = 'option2'
   }
   else {
-    showChoice.value=false
+    showChoice.value = false
   }
 
-  TimeForHive.value=0.0
-  TimeForMysql.value=0.0
-  TimeForNeo4j.value=0.0
-  percentageForMysql.value=0.0
-  percentageForHive.value=0.0
-  percentageForNeo4j.value=0.0
+  TimeForHive.value = 0.0
+  TimeForMysql.value = 0.0
+  TimeForNeo4j.value = 0.0
+  percentageForMysql.value = 0.0
+  percentageForHive.value = 0.0
+  percentageForNeo4j.value = 0.0
 };
 
 
@@ -390,26 +388,26 @@ const searchDisabled = ref(false);
 const showChoice = ref(false);
 
 const radioOptions = {
-      'option1': [
-        {value: "1", label: "Mysql", size: "large"},
-        {value: "2", label: "Hive", size: "large"},
-        // Add more options as needed
-      ],
-      'option2': [
-        {value: "1", label: "Mysql", size: "large"},
-        {value: "2", label: "Hive", size: "large"},
-        {value: "3", label: "Neo4j", size: "large"},
-        // Add more options as needed
-      ],
-    };
+  'option1': [
+    { value: "1", label: "Mysql", size: "large" },
+    { value: "2", label: "Hive", size: "large" },
+    // Add more options as needed
+  ],
+  'option2': [
+    { value: "1", label: "Mysql", size: "large" },
+    { value: "2", label: "Hive", size: "large" },
+    { value: "3", label: "Neo4j", size: "large" },
+    // Add more options as needed
+  ],
+};
 
 
-const TimeForMysql=ref(0.0)
-const TimeForHive=ref(0.0)
-const TimeForNeo4j=ref(0.0)
-const percentageForMysql=ref(0.0)
-const percentageForHive=ref(0.0)
-const percentageForNeo4j=ref(0.0)
+const TimeForMysql = ref(0.0)
+const TimeForHive = ref(0.0)
+const TimeForNeo4j = ref(0.0)
+const percentageForMysql = ref(0.0)
+const percentageForHive = ref(0.0)
+const percentageForNeo4j = ref(0.0)
 
 async function search() {
   // 首先切分字符串
@@ -424,22 +422,19 @@ async function search() {
       year: queryArray[0],
     };
     let res;
-    if(DBChoice.value==='1')
-    {
+    if (DBChoice.value === '1') {
       res = await getMovieByYearApi(params);
-      TimeForMysql.value=res.data.elapsedTime
+      TimeForMysql.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='2')
-    {
+    else if (DBChoice.value === '2') {
       res = await getMovieByYearApiHive(params);
-      TimeForHive.value=res.data.elapsedTime
+      TimeForHive.value = res.data.elapsedTime
     }
 
-    if(TimeForMysql.value!==0&&TimeForHive.value!==0)
-    {
-      let max_time=Math.max(TimeForMysql.value,TimeForHive.value)
-      percentageForMysql.value=TimeForMysql.value/(max_time)*100
-      percentageForHive.value=TimeForHive.value/(max_time)*100
+    if (TimeForMysql.value !== 0 && TimeForHive.value !== 0) {
+      let max_time = Math.max(TimeForMysql.value, TimeForHive.value)
+      percentageForMysql.value = TimeForMysql.value / (max_time) * 100
+      percentageForHive.value = TimeForHive.value / (max_time) * 100
     }
 
 
@@ -464,15 +459,13 @@ async function search() {
       month: queryArray[1],
     };
     let res;
-    if(DBChoice.value==='1')
-    {
+    if (DBChoice.value === '1') {
       res = await getMovieByYearAndMonthApi(params);
-      TimeForMysql.value=res.data.elapsedTime
+      TimeForMysql.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='2')
-    {
+    else if (DBChoice.value === '2') {
       res = await getMovieByYearAndMonthApiHive(params);
-      TimeForHive.value=res.data.elapsedTime
+      TimeForHive.value = res.data.elapsedTime
     }
     let resData = [];
     if (res.data && res.data.movies && Array.isArray(res.data.movies)) {
@@ -484,11 +477,10 @@ async function search() {
         });
       });
 
-      if(TimeForMysql.value!==0&&TimeForHive.value!==0)
-      {
-        let max_time=Math.max(TimeForMysql.value,TimeForHive.value)
-        percentageForMysql.value=TimeForMysql.value/(max_time)*100
-        percentageForHive.value=TimeForHive.value/(max_time)*100
+      if (TimeForMysql.value !== 0 && TimeForHive.value !== 0) {
+        let max_time = Math.max(TimeForMysql.value, TimeForHive.value)
+        percentageForMysql.value = TimeForMysql.value / (max_time) * 100
+        percentageForHive.value = TimeForHive.value / (max_time) * 100
       }
 
       searchResults.value = resData;
@@ -502,15 +494,13 @@ async function search() {
       season: queryArray[1],
     };
     let res;
-    if(DBChoice.value==='1')
-    {
+    if (DBChoice.value === '1') {
       res = await getMovieByYearAndSeasonApi(params);
-      TimeForMysql.value=res.data.elapsedTime
+      TimeForMysql.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='2')
-    {
+    else if (DBChoice.value === '2') {
       res = await getMovieByYearAndSeasonApiHive(params);
-      TimeForHive.value=res.data.elapsedTime
+      TimeForHive.value = res.data.elapsedTime
     }
 
     let resData = [];
@@ -523,11 +513,10 @@ async function search() {
         });
       });
 
-      if(TimeForMysql.value!==0&&TimeForHive.value!==0)
-      {
-        let max_time=Math.max(TimeForMysql.value,TimeForHive.value)
-        percentageForMysql.value=TimeForMysql.value/(max_time)*100
-        percentageForHive.value=TimeForHive.value/(max_time)*100
+      if (TimeForMysql.value !== 0 && TimeForHive.value !== 0) {
+        let max_time = Math.max(TimeForMysql.value, TimeForHive.value)
+        percentageForMysql.value = TimeForMysql.value / (max_time) * 100
+        percentageForHive.value = TimeForHive.value / (max_time) * 100
       }
 
       searchResults.value = resData;
@@ -579,15 +568,13 @@ async function search() {
       title: queryArray[0],
     };
     let res;
-    if(DBChoice.value==='1')
-    {
+    if (DBChoice.value === '1') {
       res = await getStyleFormatByMovieTitleApi(params);
-      TimeForMysql.value=res.data.elapsedTime
+      TimeForMysql.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='2')
-    {
+    else if (DBChoice.value === '2') {
       res = await getStyleFormatByMovieTitleApiHive(params);
-      TimeForHive.value=res.data.elapsedTime
+      TimeForHive.value = res.data.elapsedTime
     }
     let resData = [];
     if (res.data) {
@@ -605,11 +592,10 @@ async function search() {
         });
       }
 
-      if(TimeForMysql.value!==0&&TimeForHive.value!==0)
-      {
-        let max_time=Math.max(TimeForMysql.value,TimeForHive.value)
-        percentageForMysql.value=TimeForMysql.value/(max_time)*100
-        percentageForHive.value=TimeForHive.value/(max_time)*100
+      if (TimeForMysql.value !== 0 && TimeForHive.value !== 0) {
+        let max_time = Math.max(TimeForMysql.value, TimeForHive.value)
+        percentageForMysql.value = TimeForMysql.value / (max_time) * 100
+        percentageForHive.value = TimeForHive.value / (max_time) * 100
       }
 
       searchResults.value = resData;
@@ -638,15 +624,13 @@ async function search() {
       title: queryArray[0],
     };
     let res;
-    if(DBChoice.value==='1')
-    {
+    if (DBChoice.value === '1') {
       res = await getMainActorActorByMovieTitleApi(params);
-      TimeForMysql.value=res.data.elapsedTime
+      TimeForMysql.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='2')
-    {
+    else if (DBChoice.value === '2') {
       res = await getMainActorActorByMovieTitleApiHive(params);
-      TimeForHive.value=res.data.elapsedTime
+      TimeForHive.value = res.data.elapsedTime
     }
     let resData = [];
     if (res.data) {
@@ -662,11 +646,10 @@ async function search() {
         });
       }
 
-      if(TimeForMysql.value!==0&&TimeForHive.value!==0)
-      {
-        let max_time=Math.max(TimeForMysql.value,TimeForHive.value)
-        percentageForMysql.value=TimeForMysql.value/(max_time)*100
-        percentageForHive.value=TimeForHive.value/(max_time)*100
+      if (TimeForMysql.value !== 0 && TimeForHive.value !== 0) {
+        let max_time = Math.max(TimeForMysql.value, TimeForHive.value)
+        percentageForMysql.value = TimeForMysql.value / (max_time) * 100
+        percentageForHive.value = TimeForHive.value / (max_time) * 100
       }
 
       searchResults.value = resData;
@@ -678,15 +661,13 @@ async function search() {
       title: queryArray[0],
     };
     let res;
-    if(DBChoice.value==='1')
-    {
+    if (DBChoice.value === '1') {
       res = await getDirectorByMovieTitleApi(params);
-      TimeForMysql.value=res.data.elapsedTime
+      TimeForMysql.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='2')
-    {
+    else if (DBChoice.value === '2') {
       res = await getDirectorByMovieTitleApiHive(params);
-      TimeForHive.value=res.data.elapsedTime
+      TimeForHive.value = res.data.elapsedTime
     }
     let resData = [];
     if (res.data) {
@@ -697,11 +678,10 @@ async function search() {
         });
       }
 
-      if(TimeForMysql.value!==0&&TimeForHive.value!==0)
-      {
-        let max_time=Math.max(TimeForMysql.value,TimeForHive.value)
-        percentageForMysql.value=TimeForMysql.value/(max_time)*100
-        percentageForHive.value=TimeForHive.value/(max_time)*100
+      if (TimeForMysql.value !== 0 && TimeForHive.value !== 0) {
+        let max_time = Math.max(TimeForMysql.value, TimeForHive.value)
+        percentageForMysql.value = TimeForMysql.value / (max_time) * 100
+        percentageForHive.value = TimeForHive.value / (max_time) * 100
       }
       searchResults.value = resData;
     } else {
@@ -713,62 +693,58 @@ async function search() {
       directorName: queryArray[0],
     };
     let res;
-    if(DBChoice.value==='1')
-    {
+    if (DBChoice.value === '1') {
       res = await getMovieByDirectorApi(params);
-      TimeForMysql.value=res.data.elapsedTime
+      TimeForMysql.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='2')
-    {
+    else if (DBChoice.value === '2') {
       res = await getMovieByDirectorApiHive(params);
-      TimeForHive.value=res.data.elapsedTime
+      TimeForHive.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='3')
-    {
+    else if (DBChoice.value === '3') {
       res = await findMovieByDirectorApiNeo4j(params);
-      TimeForNeo4j.value=res.data.time
+      TimeForNeo4j.value = res.data.time
     }
 
     let resData = [];
     // 关系型查询
     if (res.data) {
-    if(DBChoice.value==='1') {
-      let length = res.data.movieName.length;
-      for (let i = 0; i < length; i++) {
-        resData.push({
-          title: res.data.movieName[i],
-        });
+      if (DBChoice.value === '1') {
+        let length = res.data.movieName.length;
+        for (let i = 0; i < length; i++) {
+          resData.push({
+            title: res.data.movieName[i],
+          });
+        }
       }
-    }
-    else if(DBChoice.value==='2'){
-      let length = res.data.movies.length;
-      for (let i = 0; i < length; i++) {
-        resData.push({
-          title: res.data.movies[i].title,
-        });
+      else if (DBChoice.value === '2') {
+        let length = res.data.movies.length;
+        for (let i = 0; i < length; i++) {
+          resData.push({
+            title: res.data.movies[i].title,
+          });
+        }
       }
-    }
-    else if(DBChoice.value==='3'){
-      let length = res.data["Nodes:"].length;
-      console.log(length)
-      for (let i = 0; i < length; i++) {
-        resData.push({
+      else if (DBChoice.value === '3') {
+        let length = res.data["Nodes:"].length;
+        console.log(length)
+        for (let i = 0; i < length; i++) {
+          resData.push({
             title: res.data["Nodes:"][i],
           });
         }
-    }
+      }
 
-    if(TimeForMysql.value!==0&&TimeForHive.value!==0&&TimeForNeo4j.value!==0)
-    {
-      let max_time=Math.max(TimeForMysql.value,TimeForHive.value,TimeForNeo4j.value)
-      percentageForMysql.value=TimeForMysql.value/(max_time)*100
-      percentageForHive.value=TimeForHive.value/(max_time)*100
-      percentageForNeo4j.value=TimeForNeo4j.value/(max_time)*100
+      if (TimeForMysql.value !== 0 && TimeForHive.value !== 0 && TimeForNeo4j.value !== 0) {
+        let max_time = Math.max(TimeForMysql.value, TimeForHive.value, TimeForNeo4j.value)
+        percentageForMysql.value = TimeForMysql.value / (max_time) * 100
+        percentageForHive.value = TimeForHive.value / (max_time) * 100
+        percentageForNeo4j.value = TimeForNeo4j.value / (max_time) * 100
+      }
+      searchResults.value = resData;
+    } else {
+      console.error("Invalid response format");
     }
-    searchResults.value = resData;
-  } else {
-    console.error("Invalid response format");
-  }
 
 
   } else if (selectedItem.value === '4-1') {
@@ -776,58 +752,52 @@ async function search() {
       ActorName: queryArray[0],
     };
     let res;
-    if(DBChoice.value==='1')
-    {
-      res = await  getMainActorByActorNameApi(params);
-      TimeForMysql.value=res.data.elapsedTime
+    if (DBChoice.value === '1') {
+      res = await getMainActorByActorNameApi(params);
+      TimeForMysql.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='2')
-    {
+    else if (DBChoice.value === '2') {
       res = await getMovieByActorApiHive(params);
-      TimeForHive.value=res.data.elapsedTime
+      TimeForHive.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='3')
-    {
+    else if (DBChoice.value === '3') {
       res = await findMovieByActorApiNeo4j(params);
-      TimeForNeo4j.value=res.data.time;
+      TimeForNeo4j.value = res.data.time;
       console.log(DBChoice.value)
     }
 
     let resData = [];
-    if(DBChoice.value==='1')
-    {
-    if (res.data) {
-      let length = res.data.movieName.length;
-      for (let i = 0; i < length; i++) {
-        resData.push({
-          title: res.data.movieName[i],
-        });
+    if (DBChoice.value === '1') {
+      if (res.data) {
+        let length = res.data.movieName.length;
+        for (let i = 0; i < length; i++) {
+          resData.push({
+            title: res.data.movieName[i],
+          });
+        }
       }
-    }
-    else if(DBChoice.value==='2')
-    {
-      let length = res.data.movies.length;
-      for (let i = 0; i < length; i++) {
-        resData.push({
-          title: res.data.movies[i].title,
-        });
+      else if (DBChoice.value === '2') {
+        let length = res.data.movies.length;
+        for (let i = 0; i < length; i++) {
+          resData.push({
+            title: res.data.movies[i].title,
+          });
+        }
       }
-    }
-    else if(DBChoice.value==='3'){
-      let length = res.data["Nodes:"].length;
-      console.log(length)
-      for (let i = 0; i < length; i++) {
-        resData.push({
+      else if (DBChoice.value === '3') {
+        let length = res.data["Nodes:"].length;
+        console.log(length)
+        for (let i = 0; i < length; i++) {
+          resData.push({
             title: res.data["Nodes:"][i],
           });
         }
-    }
-      if(TimeForMysql.value!==0&&TimeForHive.value!==0&&TimeForNeo4j.value!==0)
-      {
-        let max_time=Math.max(TimeForMysql.value,TimeForHive.value,TimeForNeo4j.value)
-        percentageForMysql.value=TimeForMysql.value/(max_time)*100
-        percentageForHive.value=TimeForHive.value/(max_time)*100
-        percentageForNeo4j.value=TimeForNeo4j.value/(max_time)*100
+      }
+      if (TimeForMysql.value !== 0 && TimeForHive.value !== 0 && TimeForNeo4j.value !== 0) {
+        let max_time = Math.max(TimeForMysql.value, TimeForHive.value, TimeForNeo4j.value)
+        percentageForMysql.value = TimeForMysql.value / (max_time) * 100
+        percentageForHive.value = TimeForHive.value / (max_time) * 100
+        percentageForNeo4j.value = TimeForNeo4j.value / (max_time) * 100
       }
 
       searchResults.value = resData;
@@ -836,7 +806,7 @@ async function search() {
     }
   }
   else if (selectedItem.value === '5-1') {
-    nowradioOptions.value='option3'
+    nowradioOptions.value = 'option3'
     let res = await getActorAndActorApiNeo4j();
     let resData = [];
     if (res.data) {
@@ -855,7 +825,7 @@ async function search() {
     }
   }
   else if (selectedItem.value === '5-2') {
-    nowradioOptions.value='option3'
+    nowradioOptions.value = 'option3'
     let res = await getActorAndDirectorApiNeo4j();
     let resData = [];
     if (res.data) {
@@ -872,29 +842,43 @@ async function search() {
       console.error("Invalid response format");
     }
   }
-  else if(selectedItem.value==='5-3')
-  {
+  else if (selectedItem.value === '5-3') {
     let params = {
       DirectorName: queryArray[0],
     };
     let res;
     let resData = [];
-    if(DBChoice.value==='1')
-    {
+    if (DBChoice.value === '1') {
       res = await getActorByDirectorApi(params);
-      TimeForMysql.value=res.data.elapsedTime
+      console.log(res)
+      if (res.data) {
+        res.data.names.forEach(item => {
+          resData.push({
+            actor: item,
+            // times: item.times
+          })
+        })
+      }
+      TimeForMysql.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='2')
-    {
+    else if (DBChoice.value === '2') {
       res = await getActorByDirectorApiHive(params);
-      TimeForHive.value=res.data.elapsedTime
+      console.log(res)
+      if (res.data) {
+        res.data.names.forEach(item => {
+          resData.push({
+            actor: item,
+            // times: item.times
+          })
+        })
+      }
+      TimeForHive.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='3')
-    {
+    else if (DBChoice.value === '3') {
       res = await getActorByDirectorApiNeo4j(params);
-      TimeForNeo4j.value=res.data.time
-      if(res.data){
-        res.data.forEach(item =>{
+      TimeForNeo4j.value = res.data.time
+      if (res.data) {
+        res.data.forEach(item => {
           resData.push({
             actor: item.name2,
             times: item.times
@@ -904,12 +888,11 @@ async function search() {
       TimeForNeo4j.value = res.data[0].queryTime
       console.log(TimeForNeo4j)
     }
-    if(TimeForMysql.value!==0&&TimeForHive.value!==0&&TimeForNeo4j.value!==0)
-    {
-      let max_time=Math.max(TimeForMysql.value,TimeForHive.value,TimeForNeo4j.value)
-      percentageForMysql.value=TimeForMysql.value/(max_time)*100
-      percentageForHive.value=TimeForHive.value/(max_time)*100
-      percentageForNeo4j.value=TimeForNeo4j.value/(max_time)*100
+    if (TimeForMysql.value !== 0 && TimeForHive.value !== 0 && TimeForNeo4j.value !== 0) {
+      let max_time = Math.max(TimeForMysql.value, TimeForHive.value, TimeForNeo4j.value)
+      percentageForMysql.value = TimeForMysql.value / (max_time) * 100
+      percentageForHive.value = TimeForHive.value / (max_time) * 100
+      percentageForNeo4j.value = TimeForNeo4j.value / (max_time) * 100
     }
 
     searchResults.value = resData;
@@ -917,7 +900,7 @@ async function search() {
 
   }
   else if (selectedItem.value === '5-4') {
-    nowradioOptions.value='option3'
+    nowradioOptions.value = 'option3'
     let params = {
       ActorName: queryArray[0],
     };
@@ -938,7 +921,7 @@ async function search() {
     }
   }
   else if (selectedItem.value === '5-5') {
-    nowradioOptions.value='option3'
+    nowradioOptions.value = 'option3'
     let params = {
       Style: queryArray[0],
     };
@@ -955,16 +938,15 @@ async function search() {
       });
       searchResults.value = resData;
       TimeForNeo4j.value = res.data[0].queryTime
-      if(TimeForNeo4j.value!==0)
-      {
-        percentageForNeo4j.value=1
+      if (TimeForNeo4j.value !== 0) {
+        percentageForNeo4j.value = 1
       }
     } else {
       console.error("Invalid response format");
     }
   }
   else if (selectedItem.value === '5-6') {
-    nowradioOptions.value='option3'
+    nowradioOptions.value = 'option3'
     let params = {
       Style: queryArray[0],
     };
@@ -990,20 +972,18 @@ async function search() {
       style: queryArray[0],
     };
     let res;
-    if(DBChoice.value==='1')
-    {
+    if (DBChoice.value === '1') {
       res = await getMovieByStyleApi(params);
-      TimeForMysql.value=res.data.elapsedTime
+      TimeForMysql.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='2')
-    {
+    else if (DBChoice.value === '2') {
+      console.log(params)
       res = await getMovieByStyleApiHive(params);
-      TimeForHive.value=res.data.elapsedTime
+      TimeForHive.value = res.data.elapsedTime
     }
-    else if(DBChoice.value==='3')
-    {
+    else if (DBChoice.value === '3') {
       res = await findMovieByTypeApiNeo4j(params);
-      TimeForNeo4j.value=res.data.time
+      TimeForNeo4j.value = res.data.time
     }
     let resData = [];
     if (res.data) {
